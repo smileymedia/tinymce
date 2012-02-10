@@ -197,7 +197,7 @@ class ETinyMce extends CInputWidget
     *
     * @var array
     */
-   private $switchLabels = array(0=>'Text mode', 1=>'HTML mode');
+   private $switchLabels = array('Toggle HTML/TEXT');
 
    /**
     * Wheter to use the HTML->plain text mode switch.
@@ -876,13 +876,15 @@ EOP;
 
       $html = '';
       if ($this->useSwitch && !$this->readOnly) {
-         $label = $this->switchLabels[($this->mode=='html'?0:1)];
-         $css = ($this->labelClass !== '') ? array('class'=>$this->labelClass) : array('style'=>$this->labelStyle);
-         $switchOptions = array_merge(array('id'=>$id.self::SWITCH_SUFFIX), $css);
-         $uri = rawurlencode('$("#'.$id.'").toggleModeTinyMCE('.$jsToggleLabels.')');
-         $link = CHtml::link($label, 'javascript:'.$uri, $switchOptions);
-         $switch = CHtml::tag('div', array(), CHtml::tag('span', array(), $link));
-         $html = CHtml::tag('div', array(), $textarea.$switch);
+          $label = $this->switchLabels[($this->mode == 'html' ? 0 : 1)];
+          $css = ($this->labelClass !== '') ? array('class' => $this->labelClass) : array('style' => $this->labelStyle);
+          $switchOptions = array_merge(array('id' => $id . self::SWITCH_SUFFIX,
+              'onclick' => "tinymce.execCommand('mceToggleEditor',false,'$id')"), $css);
+          //$uri = rawurlencode('$("#'.$id.'").toggleModeTinyMCE('.$jsToggleLabels.')');
+          $uri = ";";
+          $link = CHtml::link($label, 'javascript:' . $uri, $switchOptions);
+          $switch = CHtml::tag('div', array(), CHtml::tag('span', array(), $link));
+          $html = CHtml::tag('div', array(), $textarea . $switch);
       }
       else {
          $html = $textarea;
